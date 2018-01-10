@@ -1,6 +1,6 @@
 /*
 	http://docs.openlighting.org/ola/doc/latest/client_tutorial.html
-	Programme d'exemple pour transmettre des donnée DMX avec OLA
+	Programme d'exemple pour transmettre des donnÃ©e DMX avec OLA
 */
 #include <ola/DmxBuffer.h>
 #include <ola/io/SelectServer.h>
@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-bool SendData(ola::client::OlaClientWrapper *wrapper) //Fonction pour envoyer des données
+bool SendData(ola::client::OlaClientWrapper *wrapper) //Fonction pour envoyer des donnÃ©es
 {
 	 static unsigned int universe = 1;
 	 static unsigned int i = 0;
@@ -19,9 +19,9 @@ bool SendData(ola::client::OlaClientWrapper *wrapper) //Fonction pour envoyer de
 	 ola::DmxBuffer buffer;
 	 buffer.Blackout();
 	 buffer.SetChannel(0, i);
-	 wrapper->GetClient()->SendDMX(universe, buffer, ola::client::SendDMXArgs());//Envoi des données
+	 wrapper->GetClient()->SendDMX(universe, buffer, ola::client::SendDMXArgs());//Envoi des donnÃ©es
 
-	 if (++i == 100) //Une fois qu'on atteint les 100 images envoyées on termine le programme
+	 if (++i == 100) //Une fois qu'on atteint les 100 images envoyÃ©es on termine le programme
 	 {
 		wrapper->GetSelectServer()->Terminate();
 	 }
@@ -36,7 +36,7 @@ int main(int, char *[])
 	 ola::InitLogging(ola::OLA_LOG_WARN, ola::OLA_LOG_STDERR);
 	 ola::client::OlaClientWrapper wrapper;
 
-	 if (!wrapper.Setup()) //On initialise la variable wrapper avec la fonction Setup, si ça ne fonctionne pas on termine le programme
+	 if (!wrapper.Setup()) //On initialise la variable wrapper avec la fonction Setup, si Ã§a ne fonctionne pas on termine le programme
 	 {
 		 std::cerr << "Setup failed" << endl;
 		 exit(1);
@@ -44,7 +44,7 @@ int main(int, char *[])
 
 	 // Creer un timer et l'enregistrer sur le serveur
 	 ola::io::SelectServer *ss = wrapper.GetSelectServer(); // Selectionner le serveur
-	 ss->RegisterRepeatingTimeout(25, ola::NewCallback(&SendData, &wrapper));//repeter toutes les 25 ms ;    la donnée SendData est un appel de la fonction définie plus haut
+	 ss->RegisterRepeatingTimeout(25, ola::NewCallback(&SendData, &wrapper));//repeter toutes les 25 ms ;    la donnÃ©e SendData est un appel de la fonction dÃ©finie plus haut
 
 	 // Start the main loop
 	 ss->Run();
