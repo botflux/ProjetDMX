@@ -10,32 +10,32 @@ using std::endl;
 
 int main(int, char *[]) 
 {
-	unsigned int universe = 1; // varaible utilisée pour envoyer des donnée
+	unsigned int universe = 1; // varaible utilisÃ©e pour envoyer des donnÃ©e
 
 	ola::InitLogging(ola::OLA_LOG_WARN, ola::OLA_LOG_STDERR);//Initialisation du loggin
-	ola::DmxBuffer buffer; //Un buffer pour garder la donnée
-	buffer.Blackout(); // On initialise le buffer à 0
+	ola::DmxBuffer buffer; //Un buffer pour garder la donnÃ©e
+	buffer.Blackout(); // On initialise le buffer Ã  0
 
-	// Créer un nouveau client
+	// CrÃ©er un nouveau client
 	ola::client::StreamingClient ola_client((ola::client::StreamingClient::Options()));
 
 	// configurer le client pour se connecter au serveur
-	if (!ola_client.Setup()) //Si ça ne fonctionne pas on arrete le programme
+	if (!ola_client.Setup()) //Si Ã§a ne fonctionne pas on arrete le programme
 	{
 		std::cerr << "Setup failed" << endl;
 		exit(1);
 	}
 
-	//Envoi de 100 données au serveur
+	//Envoi de 100 donnÃ©es au serveur
 	for (unsigned int i = 0; i < 100; i++) 
 	{
-		buffer.SetChannel(0, i);//On remet le channel à 0 à chaque fois qu'une trame est envoyée
-		if (!ola_client.SendDmx(universe, buffer)) //Si l'envoie échoue on arrete le programme
+		buffer.SetChannel(0, i);//On remet le channel Ã  0 Ã  chaque fois qu'une trame est envoyÃ©e
+		if (!ola_client.SendDmx(universe, buffer)) //Si l'envoie Ã©choue on arrete le programme
 		{
 			cout << "Send DMX failed" << endl;
 			exit(1);
 		}
-		usleep(25000); // pause de 25ms entre chaque envoi de données
+		usleep(25000); // pause de 25ms entre chaque envoi de donnÃ©es
 	}
  return 0;
 }
