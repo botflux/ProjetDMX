@@ -10,7 +10,7 @@
 - Prise en main de WPF C#
 - Création du layout pour l'application mobile
 
-# 2018 - 01 - 17
+### 2018 - 01 - 17
 
 - Prise en main bibliothèque C# sur les sockets
 - Première version de la bibliothèque Parser
