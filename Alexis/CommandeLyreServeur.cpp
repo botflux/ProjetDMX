@@ -25,7 +25,7 @@ using namespace std;
 
 #define DMXDEVICE "/dev/ttyUSB0"
 
-#define PORT IPPORT_USERRESERVED
+#define PORT 5000
 #define LG_MESSAGE 256
 
 
@@ -109,18 +109,20 @@ int main(int argc, char *argv[])
 
 	while(1)
 	{
+		memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));
 		//On attend un ordre d'un client
 		lus = recvfrom(descripteurSocket, messageRecu, sizeof(messageRecu),0,(struct sockaddr*)&pointDeRencontreDistant, &longueurAdresse);
 
 		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
 
 		//fixe et emet la valeur des canaux
-		valeur[0] = (int)lus;
-		
-		for(i=0; i <=511; i=i+1)
+		valeur[0] = atoi( messageRecu);
+
+		for(i=0; i <=512; i=i+1)
 		{
 			interfaceDMX->SetCanalDMX(i+1, valeur[i]);
 		}
+
 		interfaceDMX->SendDMX();
 	}
 	close(descripteurSocket);
