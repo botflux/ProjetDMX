@@ -14,3 +14,9 @@
 
 - Prise en main bibliothèque C# sur les sockets
 - Première version de la bibliothèque Parser
+
+#### 2018 - 01 - 19
+
+- Finaliser la première version de la bibliothèque Parser
+- Création des diagrammes de la bibliothèque Parser
+- Implémentation d'un client udp minimaliste
