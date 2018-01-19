@@ -115,9 +115,11 @@ int main(int argc, char *argv[])
 		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
 
 		//fixe et emet la valeur des canaux
+		valeur[0] = (int)lus;
+		
 		for(i=0; i <=511; i=i+1)
 		{
-			interfaceDMX->SetCanalDMX(i+1, valeur[i+1]);
+			interfaceDMX->SetCanalDMX(i+1, valeur[i]);
 		}
 		interfaceDMX->SendDMX();
 	}
