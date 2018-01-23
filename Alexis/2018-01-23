@@ -1,0 +1,3 @@
+Programme pour commander la lyre manuellement quart par quart OK;
+Programme pour commander la lyre entierre manuellement OK;
+Programme pour commander la lyre entierre par le serveur OK;(le client doit envoyer des trames de type "R;G;B" avec R, G, B des entier. Exemple : "100;230;150";
