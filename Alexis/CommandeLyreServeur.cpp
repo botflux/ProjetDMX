@@ -106,6 +106,8 @@ int main(int argc, char *argv[])
 	memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));
 
 
+	char *pch;
+	int j;
 
 	while(1)
 	{
@@ -115,12 +117,24 @@ int main(int argc, char *argv[])
 
 		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
 
-		//fixe et emet la valeur des canaux
-		valeur[0] = atoi( messageRecu);
+		pch = strtok(messageRecu,";");
+		j=0;
+		while(pch!= NULL)
+		{
+			valeur[j] = atoi(pch);
+			pch = strtok(NULL,";");
+			j=j+1;
+		}
 
-		for(i=0; i <=512; i=i+1)
+		//fixe et emet la valeur des canaux
+		//valeur[0] = atoi( messageRecu);
+
+		for(i=0; i <=2; i=i+1)
 		{
 			interfaceDMX->SetCanalDMX(i+1, valeur[i]);
+			interfaceDMX->SetCanalDMX(i+4, valeur[i]);
+			interfaceDMX->SetCanalDMX(i+7, valeur[i]);
+			interfaceDMX->SetCanalDMX(i+10,valeur[i]);
 		}
 
 		interfaceDMX->SendDMX();
