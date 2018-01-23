@@ -20,3 +20,8 @@
 - Finaliser la première version de la bibliothèque Parser
 - Création des diagrammes de la bibliothèque Parser
 - Implémentation d'un client udp minimaliste
+
+### 2018 - 01 - 23
+
+- Modification du Parser
+- Création d'un client UDP synchrone
