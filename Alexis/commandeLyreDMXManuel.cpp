@@ -1,7 +1,7 @@
 /*
  * Programme de test de l'interface Enttec DMX USB PRO
  * (c) 2009 tv
- */
+ */ 
 
 #include <iostream>
 #include <iomanip>
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     {
         printf("Usage : %s peripherique\n", argv[0]);
         printf("Exemple : %s /dev/ttyUSB0\n", argv[0]);
-        return 1;
+        return 1; 
     }
     printf("Peripherique : %s\n\n", argv[1]);
 
