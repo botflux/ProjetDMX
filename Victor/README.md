@@ -25,3 +25,7 @@
 
 - Modification du Parser
 - Création d'un client UDP synchrone
+
+### 2018 - 01 - 24
+
+- Prise en main WPF C#
