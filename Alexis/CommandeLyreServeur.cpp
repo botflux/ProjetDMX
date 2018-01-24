@@ -27,17 +27,17 @@ using namespace std;
 
 #define PORT 5000
 #define LG_MESSAGE 256
-
+#define ADRESSEDEBUTPROJO 15
 
 int main(int argc, char *argv[])
 {
-    if(argc != 2)
+   /* if(argc != 2)
     {
         printf("Usage : %s peripherique\n", argv[0]);
         printf("Exemple : %s /dev/ttyUSB0\n", argv[0]);
         return 1;
-    }
-    printf("Peripherique : %s\n\n", argv[1]);
+    }*/
+    printf("Peripherique : %s\n\n", DMXDEVICE);
 
 /*    EnttecDMXUSB interfaceDMX(DMX_USB_PRO, DMXDEVICE);
     //EnttecDMXUSB interfaceDMX(DMX_USB_PRO, argv[1]);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	struct sockaddr_in pointDeRencontreLocal;
 	struct sockaddr_in pointDeRencontreDistant;
 	socklen_t longueurAdresse;
-	char messageRecu[LG_MESSAGE];
+	char messageRecu[LG_MESSAGE]="";
 	int lus;
 	int retour;
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));
 
 
-	char *pch;
+	//char *pch;
 	int j;
 
 	while(1)
@@ -117,18 +117,29 @@ int main(int argc, char *argv[])
 
 		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
 
-		pch = strtok(messageRecu,";");
+		char *pch = strtok(messageRecu,";");
+		cout<<"cible : "<<pch<<endl;
+		string cible = pch;
 		j=0;
+		pch = strtok(NULL,";");
 		while(pch!= NULL)
 		{
 			valeur[j] = atoi(pch);
 			pch = strtok(NULL,";");
+			//cout << "test numero : " << j << " apres premiere ligne"<< endl;
+			//cout << pch <<  endl;
+			//valeur[j] = atoi(pch);
+			//cout <<"test apres deuxieme ligne"<<endl;
 			j=j+1;
 		}
 
 		//fixe et emet la valeur des canaux
 		//valeur[0] = atoi( messageRecu);
 
+
+		//Pour la lyre  :
+		if (cible == "LYRE")
+		{
 		for(i=0; i <=2; i=i+1)
 		{
 			interfaceDMX->SetCanalDMX(i+1, valeur[i]);
@@ -136,8 +147,27 @@ int main(int argc, char *argv[])
 			interfaceDMX->SetCanalDMX(i+7, valeur[i]);
 			interfaceDMX->SetCanalDMX(i+10,valeur[i]);
 		}
-
 		interfaceDMX->SendDMX();
+		}
+
+		//Pour le projo
+		if(cible == "PROJO");
+		{
+		int canalProjo = ADRESSEDEBUTPROJO;
+
+		for (i=0; i <=6; i=i+1)
+		{
+			interfaceDMX->SetCanalDMX(canalProjo, valeur[i]);
+			canalProjo = canalProjo +1;
+		}
+		interfaceDMX->SendDMX();
+		}
+
+		if(cible != "PROJO" && cible !="LYRE")
+		{
+			cout<< "Cible incorrecte"<<endl;
+		}
+
 	}
 	close(descripteurSocket);
     }
