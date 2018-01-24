@@ -26,6 +26,7 @@ using namespace std;
 #define LG_MESSAGE 256
 #define ADRESSEDEBUTPROJO 22
 #define ADRESSEDEBUTLYRE 1
+#define TAILLEBUSDMX 512
 
 int main(int argc, char *argv[])
 {
@@ -43,9 +44,9 @@ int main(int argc, char *argv[])
 	configurationDMX = interfaceDMX->GetConfiguration();
 	cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
 
-	int valeur[512];//tableau contenant les Valeur des 512 canaux du bus DMX
+	int valeur[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
 	int i;
-	memset(valeur, 0, 512);//On initialise le tableaux en le remplissant de 0
+	memset(valeur, 0, TAILLEBUSDMX);//On initialise le tableaux en le remplissant de 0
 
 
 	//Variables pour le socket
