@@ -62,22 +62,6 @@ return decoded;
 int main(int argc, char *argv[])
 {
 
-    string test1="cible=LYRE;red=255;green=100;blue=50";
-
-	vector<string> vectorStr = decode(test1,';');
-
-   vector< vector<string> > fullDecoded;
-
-	for(int i = 0; i<vectorStr.size(); i=i+1)
-	{
-		vector<string> tempo = decode(vectorStr[i], '=');
-		fullDecoded.push_back(tempo);
-	}
-	for(int i=0; i < fullDecoded.size(); i=i+1)
-	{
-		cout << "Nom : " << fullDecoded[i][0] << "\tValeur : " << fullDecoded[i][1]<<endl;
-	}
-
 
     printf("Peripherique : %s\n\n", DMXDEVICE);
 
@@ -94,7 +78,6 @@ int main(int argc, char *argv[])
 	cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
 
 	int valeur[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
-	int i;
 	memset(valeur, 0, TAILLEBUSDMX);//On initialise le tableaux en le remplissant de 0
 
 
@@ -147,24 +130,72 @@ int main(int argc, char *argv[])
 		//On affiche le message recu
 		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
 
-		//On le parse pour separer les differents champs
-		char *pch = strtok(messageRecu,";");
-		cout<<"cible : "<<pch<<endl;
-		string cible = pch;//On definit la cible
-		j=0;
-		pch = strtok(NULL,";");//On atteint la premiere valeur a vouloir entrer dans le tableau de valeur
-		while(pch!= NULL)
+		string message = messageRecu;
+
+		vector<string> vectorStr = decode(message,';');
+		vector< vector<string> > fullDecoded;
+
+		for(int i = 0; i < vectorStr.size(); i=i+1)
 		{
-			valeur[j] = atoi(pch);//on rentre la valeur dans le tableau
-			pch = strtok(NULL,";");//On passe a la valeur suivante
-			j=j+1;//on indente l'index du tableau
+			vector<string> tempo = decode(vectorStr[i],'=');
+			fullDecoded.push_back(tempo);
+		}
+		string cible = "";
+
+		char strValueRed[10]="0";
+		char strValueGreen[10]="0";
+		char strValueBlue[10]="0";
+
+		int valueRed=0;
+		int valueGreen=0;
+		int valueBlue = 0;
+
+		string testRed;
+		string testBlue;
+		string testGreen;
+
+
+		for(int i=0; i< fullDecoded.size(); i=i+1)
+		{
+			cout <<"Nom : " << fullDecoded[i][0]  <<"\tValeur : " << fullDecoded[i][1] << endl; 
+			if(fullDecoded[i][0]=="CIBLE")
+			{
+				cible = fullDecoded[i][1];
+			}
 		}
 
 		//Pour la lyre  :
 		if (cible == "LYRE")
 		{
 			int canalLyre = ADRESSEDEBUTLYRE;
-			for(i=0; i <=2; i=i+1)
+
+			for(int i=0; i < fullDecoded.size();i=i+1)
+			{
+				if(fullDecoded[i][0]=="RED")
+				{
+					testRed = fullDecoded[i][1];
+					strcpy(strValueRed, testRed.c_str());
+					valueRed = atoi(strValueRed);
+				}
+				if(fullDecoded[i][0]=="BLUE")
+				{
+					testBlue = fullDecoded[i][1];
+					strcpy(strValueBlue, testBlue.c_str());
+					valueBlue = atoi(strValueBlue);
+				}
+				if(fullDecoded[i][0]=="GREEN")
+				{
+					testGreen = fullDecoded[i][1];
+					strcpy(strValueGreen, testGreen.c_str());
+					valueGreen = atoi(strValueGreen);
+				}
+
+			}
+			valeur[0] = valueRed;
+			valeur[1] = valueGreen;
+			valeur[2] = valueBlue;
+
+			for(int i=0; i <=2; i=i+1)
 			{
 				//De base la lyre se configure quart par quart
 				//ici on veut l'allumer entierement couleur par couleur
@@ -184,7 +215,7 @@ int main(int argc, char *argv[])
 		{
 			int canalProjo = ADRESSEDEBUTPROJO;
 
-			for (i=0; i <=6; i=i+1)// 7 canaux à definir 1 par 1
+			for (int i=0; i <=6; i=i+1)// 7 canaux à definir 1 par 1
 			{
 				interfaceDMX->SetCanalDMX(canalProjo, valeur[i]);//On definit le canal avec sa valeur
 				canalProjo = canalProjo +1;//On apsse au canal suivant à chaque tour
