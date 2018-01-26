@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <string>
 
+#include <vector>
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -28,8 +30,55 @@ using namespace std;
 #define ADRESSEDEBUTLYRE 1
 #define TAILLEBUSDMX 512
 
+
+vector<string> decode (string message, char separator)
+{
+vector<string> decoded;
+
+string temp("");
+
+for(int i = 0; i<message.length(); i=i+1)
+{
+	if(message[i] == separator || i==message.length() -1)
+	{
+		if(i==message.length()-1)
+		{
+			temp = temp+message[i];
+		}
+		decoded.push_back(temp);
+		temp = "";
+	}
+
+	else
+	{
+		temp = temp+message[i];
+	}
+}
+return decoded;
+}
+
+
+
 int main(int argc, char *argv[])
 {
+
+    string test1="cible=LYRE;red=255;green=100;blue=50";
+
+	vector<string> vectorStr = decode(test1,';');
+
+   vector< vector<string> > fullDecoded;
+
+	for(int i = 0; i<vectorStr.size(); i=i+1)
+	{
+		vector<string> tempo = decode(vectorStr[i], '=');
+		fullDecoded.push_back(tempo);
+	}
+	for(int i=0; i < fullDecoded.size(); i=i+1)
+	{
+		cout << "Nom : " << fullDecoded[i][0] << "\tValeur : " << fullDecoded[i][1]<<endl;
+	}
+
+
     printf("Peripherique : %s\n\n", DMXDEVICE);
 
     EnttecDMXUSB *interfaceDMX;
