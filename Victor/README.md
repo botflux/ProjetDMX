@@ -36,3 +36,5 @@
 - Création fonction de decodage en C++
 - Aide partie de Quentin
 - Test WPF C#
+- Début du rassemblement des classes Parser, Client ect.
+- Création d'une IHM
