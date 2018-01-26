@@ -29,3 +29,10 @@
 ### 2018 - 01 - 24
 
 - Prise en main WPF C#
+
+### 2018 - 01 - 26
+
+- Création dll pour librairie C# Client
+- Création fonction de decodage en C++
+- Aide partie de Quentin
+- Test WPF C#
