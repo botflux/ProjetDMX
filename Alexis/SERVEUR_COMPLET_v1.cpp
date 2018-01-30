@@ -77,9 +77,10 @@ int main(int argc, char *argv[])
 	configurationDMX = interfaceDMX->GetConfiguration();
 	cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
 
-	int valeur[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
-	memset(valeur, 0, TAILLEBUSDMX);//On initialise le tableaux en le remplissant de 0
-
+	int valeurLyre[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
+	int valeurProjo[TAILLEBUSDMX];
+	memset(valeurLyre, 0, TAILLEBUSDMX);//On initialise le tableaux en le remplissant de 0
+	memset(valeurProjo, 0, TAILLEBUSDMX);
 
 	//Variables pour le socket
 	int descripteurSocket;
@@ -142,18 +143,32 @@ int main(int argc, char *argv[])
 		}
 		string cible = "";
 
-		char strValueRed[10]="0";
-		char strValueGreen[10]="0";
-		char strValueBlue[10]="0";
+		char strValueRedLyre[10]="0";
+		char strValueGreenLyre[10]="0";
+		char strValueBlueLyre[10]="0";
 
-		int valueRed=0;
-		int valueGreen=0;
-		int valueBlue = 0;
+		char strValueRedProjo[10]="0";
+		char strValueGreenProjo[10]="0";
+		char strValueBlueProjo[10]="0";
+		char strValueIntensityProjo[10]="0";
 
-		string testRed;
-		string testBlue;
-		string testGreen;
+		int valueRedLyre=0;
+		int valueGreenLyre=0;
+		int valueBlueLyre=0;
 
+		int valueRedProjo=0;
+		int valueGreenProjo=0;
+		int valueBlueProjo=0;
+		int valueIntensityProjo=0;
+
+		string testRedLyre;
+		string testBlueLyre;
+		string testGreenLyre;
+
+		string testRedProjo;
+		string testBlueProjo;
+		string testGreenProjo;
+		string testIntensityProjo;
 
 		for(int i=0; i< fullDecoded.size(); i=i+1)
 		{
@@ -169,31 +184,33 @@ int main(int argc, char *argv[])
 		{
 			int canalLyre = ADRESSEDEBUTLYRE;
 
+
+
 			for(int i=0; i < fullDecoded.size();i=i+1)
 			{
 				if(fullDecoded[i][0]=="RED")
 				{
-					testRed = fullDecoded[i][1];
-					strcpy(strValueRed, testRed.c_str());
-					valueRed = atoi(strValueRed);
+					testRedLyre = fullDecoded[i][1];
+					strcpy(strValueRedLyre, testRedLyre.c_str());
+					valueRedLyre = atoi(strValueRedLyre);
 				}
 				if(fullDecoded[i][0]=="BLUE")
 				{
-					testBlue = fullDecoded[i][1];
-					strcpy(strValueBlue, testBlue.c_str());
-					valueBlue = atoi(strValueBlue);
+					testBlueLyre = fullDecoded[i][1];
+					strcpy(strValueBlueLyre, testBlueLyre.c_str());
+					valueBlueLyre = atoi(strValueBlueLyre);
 				}
 				if(fullDecoded[i][0]=="GREEN")
 				{
-					testGreen = fullDecoded[i][1];
-					strcpy(strValueGreen, testGreen.c_str());
-					valueGreen = atoi(strValueGreen);
+					testGreenLyre = fullDecoded[i][1];
+					strcpy(strValueGreenLyre, testGreenLyre.c_str());
+					valueGreenLyre = atoi(strValueGreenLyre);
 				}
 
 			}
-			valeur[0] = valueRed;
-			valeur[1] = valueGreen;
-			valeur[2] = valueBlue;
+			valeurLyre[0] = valueRedLyre;
+			valeurLyre[1] = valueGreenLyre;
+			valeurLyre[2] = valueBlueLyre;
 
 			for(int i=0; i <=2; i=i+1)
 			{
@@ -201,10 +218,10 @@ int main(int argc, char *argv[])
 				//ici on veut l'allumer entierement couleur par couleur
 				//On fait 3 tour de boucle pour les 3 couleurs
 				//et on met chaque quart a la meme valeur
-				interfaceDMX->SetCanalDMX(canalLyre, valeur[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+3, valeur[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+6, valeur[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+9,valeur[i]);
+				interfaceDMX->SetCanalDMX(canalLyre, valeurLyre[i]);
+				interfaceDMX->SetCanalDMX(canalLyre+3, valeurLyre[i]);
+				interfaceDMX->SetCanalDMX(canalLyre+6, valeurLyre[i]);
+				interfaceDMX->SetCanalDMX(canalLyre+9,valeurLyre[i]);
 				canalLyre = canalLyre + 1;//A chaque tour on passe a la couleur suivante en indentant les canaux
 			}
 			interfaceDMX->SendDMX();//on envoie la trame DMX au boitier
@@ -214,13 +231,55 @@ int main(int argc, char *argv[])
 		else if(cible == "PROJO")
 		{
 			int canalProjo = ADRESSEDEBUTPROJO;
-
+			/*
 			for (int i=0; i <=6; i=i+1)// 7 canaux à definir 1 par 1
 			{
 				interfaceDMX->SetCanalDMX(canalProjo, valeur[i]);//On definit le canal avec sa valeur
 				canalProjo = canalProjo +1;//On apsse au canal suivant à chaque tour
 			}
 			interfaceDMX->SendDMX();// On enovie la trame DMX
+			*/
+			for(int i=0; i < fullDecoded.size(); i=i+1)
+			{
+				if (fullDecoded[i][0]=="RED")
+				{
+					testRedProjo = fullDecoded[i][1];
+					strcpy(strValueRedProjo, testRedProjo.c_str());
+					valueRedProjo = atoi(strValueRedProjo);
+				}
+
+				if (fullDecoded[i][0]=="BLUE")
+				{
+					testBlueProjo = fullDecoded[i][1];
+					strcpy(strValueBlueProjo, testBlueProjo.c_str());
+					valueBlueProjo = atoi(strValueBlueProjo);
+				}
+
+				if (fullDecoded[i][0]=="GREEN")
+				{
+					testGreenProjo = fullDecoded[i][1];
+					strcpy(strValueGreenProjo, testGreenProjo.c_str());
+					valueGreenProjo = atoi(strValueGreenProjo);
+				}
+
+				if(fullDecoded[i][0]=="INTENSITY")
+				{
+					testIntensityProjo = fullDecoded[i][1];
+					strcpy(strValueIntensityProjo, testIntensityProjo.c_str());
+					valueIntensityProjo = atoi(strValueIntensityProjo);
+				}
+			}
+			valeurProjo[0]=valueRedProjo;
+			valeurProjo[1]=valueGreenProjo;
+			valeurProjo[2]=valueBlueProjo;
+			valeurProjo[6]=valueIntensityProjo;
+
+			for(int i=0; i<=6; i=i+1)
+			{
+				interfaceDMX->SetCanalDMX(canalProjo, valeurProjo[i]);
+				canalProjo = canalProjo + 1;
+			}
+			interfaceDMX->SendDMX();
 		}
 
 		else// Si la cible n'existe pas
