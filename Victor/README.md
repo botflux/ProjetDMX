@@ -38,3 +38,9 @@
 - Test WPF C#
 - Début du rassemblement des classes Parser, Client ect.
 - Création d'une IHM
+
+### 2018 - 02 - 02
+
+- Amélioration application
+- Ajout Data binding
+- Amélioration Librairie Parser
