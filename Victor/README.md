@@ -44,3 +44,7 @@
 - Amélioration application
 - Ajout Data binding
 - Amélioration Librairie Parser
+
+### 2018 - 02 - 06
+
+- Prise en main Commands
