@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    tools:context="com.example.quentinlehmann.test1.MainActivity">
+
+
+    <LinearLayout
+        android:id="@+id/LayoutBlue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="405dp"
+        android:orientation="vertical"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LayoutGreen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="325dp"
+        android:orientation="vertical"></LinearLayout>
+
+    <Button
+        android:id="@+id/btnEnvoyer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClick"
+        android:text="Envoyer" />
+
+    <SeekBar
+        android:id="@+id/seekBarGreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="380dp"
+        android:max="255"
+        android:progress="1" />
+
+    <SeekBar
+        android:id="@+id/seekBarBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="460dp"
+        android:max="255"
+        android:progress="1" />
+
+    <SeekBar
+        android:id="@+id/seekBarRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="300dp"
+        android:max="255"
+        android:progress="1" />
+
+    <LinearLayout
+        android:id="@+id/layoutColor"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LayoutRed"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="240dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:orientation="vertical"></LinearLayout>
+    </RelativeLayout>
+
+
