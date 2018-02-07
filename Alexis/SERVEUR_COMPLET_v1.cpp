@@ -6,12 +6,6 @@
 
 #include <vector>
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -57,7 +51,16 @@ for(int i = 0; i<message.length(); i=i+1)
 return decoded;
 }
 
-
+class scene
+{
+	string cible ;
+	int red ;
+	int green ;
+	int blue ;
+	int intensity ;
+	int duree ;
+	int numero ;
+};
 
 int main(int argc, char *argv[])
 {
@@ -66,12 +69,15 @@ int main(int argc, char *argv[])
     printf("Peripherique : %s\n\n", DMXDEVICE);
 
     EnttecDMXUSB *interfaceDMX;
-
+    cout << "test 0" << endl;
     interfaceDMX = new EnttecDMXUSB(DMX_USB_PRO, DMXDEVICE);
-
+	cout << "test 1" << endl;
     string configurationDMX;
 
-    if(interfaceDMX->IsAvailable())//Si l'interface DMX est OK
+    bool test = interfaceDMX->IsAvailable();
+    cout << "test : " << endl;
+
+    if(test)//Si l'interface DMX est OK
     {
 	//affiche la config
 	configurationDMX = interfaceDMX->GetConfiguration();
@@ -122,7 +128,7 @@ int main(int argc, char *argv[])
 	memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));//On initialise messageRecu comme une chaine vide
 
 	int j;
-
+	vector<scene> storyboard;
 	while(1)
 	{
 		memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));
@@ -180,7 +186,7 @@ int main(int argc, char *argv[])
 		}
 
 		//Pour la lyre  :
-		if (cible == "LYRE")
+		if (cible == "PROJO")
 		{
 			int canalLyre = ADRESSEDEBUTLYRE;
 
@@ -228,17 +234,10 @@ int main(int argc, char *argv[])
 		}
 
 		//Pour le projo
-		else if(cible == "PROJO")
+		else if(cible == "LYRE")
 		{
 			int canalProjo = ADRESSEDEBUTPROJO;
-			/*
-			for (int i=0; i <=6; i=i+1)// 7 canaux à definir 1 par 1
-			{
-				interfaceDMX->SetCanalDMX(canalProjo, valeur[i]);//On definit le canal avec sa valeur
-				canalProjo = canalProjo +1;//On apsse au canal suivant à chaque tour
-			}
-			interfaceDMX->SendDMX();// On enovie la trame DMX
-			*/
+
 			for(int i=0; i < fullDecoded.size(); i=i+1)
 			{
 				if (fullDecoded[i][0]=="RED")
