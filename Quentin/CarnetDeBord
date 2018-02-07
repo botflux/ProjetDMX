@@ -1,0 +1,65 @@
+  10 janvier : 
+
+On a défini les taches de chacun, on a désossé le problème général.
+Pour ma part je suis l’étudiant numéro 3, je dois gérer les story boards a l’aide d’Android studio en java, je dois gérer le projecteur à led.
+Victor faire la même mais en C#.
+Estelle contrôle la lyre en C#.
+Francis s’occupe de faire le serveur sur le raspi.
+On a testé les lampes, et on a réfléchi a comment organiser le travail au mieux.
+Essayer de comprendre comment fonctionne android studio.
+https://openclassrooms.com/courses/creez-des-applications-pour-android/installation-et-configuration-des-outils
+https://hal.archives-ouvertes.fr/cel-01241650v2/document
+
+  12 janvier :
+
+Installation d’Android et faire les parametre d’installation.
+Faire un fichier gradle.properties dans le dossier .gradle et y mettre « le proxy et le port ». 
+Definition des reglages d’android.
+
+  16 janvier :
+Recherche des problèmes de l’émulateur il affiche « Emulator: emulator: WARNING: UpdateCheck: Failure: Error » a chaque lancemement. 
+
+   17 janvier :
+
+Configuration android emulateur.
+Essayer de mettre tout les documents sur le disque dur E.
+Les erreurs sont du au pluging audio que l’on a pas, et l’autre c’est par rapport à la mémoire RAM des ordis qui est trop basses (4GB).
+
+19 janvier :
+Regarder le tuto android.
+Il faut construire l’ihm sur le plus petit téléphone disponible pour que l’Ihm s’adapte.
+Abandon de l’émulateur finalement car trop volumineux, on prendra un galaxy S7 5’’.
+Creation d’un usecase.
+Creation d’un diagramme de sequence.
+
+  23 janvier :
+
+Reflexion sur comment changer la couleur d’un objet grace a des seekBar.
+
+  24 janvier :
+
+Recherche des problemes sur le telephone en gros a chaque fois que je copiais collais sur le telephone il disait que ca exiqtait déjà a ce nom et du coup il ne se mettait pas a jour donc il faut a chaque fois desinstaller l’appli sur le telephone.
+
+  26 janvier :
+
+Difficulte avec la couleur de ma part.
+Faire les couleurs sur un layout fait, plus petite couleur de RGB chacun dans un petit layout.
+Maintenant on se charge de creeer des sockets avec un message que l’on a defenie.
+Mettre le wifi sur le raspberry.
+On fait un partage de connexion avec un autre telephone pour mettre sur le meme reseau le telephone avec l’application android et la clef wifi branche sur la raspberry
+
+  31 janvier :
+Mettre des permissions dans un fichier manifest.
+
+  02 février :
+
+Faire un menu pour pouvoir mettre des fonctionnalités plus aidé.
+
+  06 janvier :
+Menu appli plus reparation raspi.
+
+  07 janvier :
+Changer le nom de test1 en ProjecteurLED, faire le boutton quitter, engistrer le message sous un document .
+Les fichiers enregistre se trouve dans le repertoire MesFichiers->Stockage inter ->Android->data->com.example.quentinlehmann.test1->files->Dowload.
+Bloquer la rotation de l’écran.
+Enregistrer sous 
