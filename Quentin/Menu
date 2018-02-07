@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <item android:showAsAction="never"
+            android:id="@+id/option"
+            android:title="Options">
+
+            <menu android:id="@+id/sousmenu"
+                android:showAsAction="never">
+                <item android:id="@+id/favoris"
+                    android:title="Favoris"   />
+
+                <item android:id="@+id/action_delete"
+                    android:title="Effacer"   />
+
+                <item android:id="@+id/enregistrer"
+                    android:title="Enregistrer"  />
+            </menu>
+        </item>
+
+        <item android:id="@+id/quitter"
+            android:title="Quitter"
+            app:showAsAction="ifRoom"
+            tools:ignore="MissingPrefix" />
+    </menu>
