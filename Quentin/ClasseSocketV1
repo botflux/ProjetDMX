@@ -1,0 +1,42 @@
+package com.example.quentinlehmann.test1;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
+/**
+ * Created by quentin.lehmann on 09/02/2018.
+ */
+
+public class Socket {
+
+    public void send(String str) {
+        final int server_port = 5000;
+        InetAddress local = null;
+        try {
+            local = InetAddress.getByName( "172.20.10.11" ); //Wifi
+            //local = InetAddress.getByName( "10.129.21.245" ); //reseau
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        byte[] buffer = str.getBytes();
+        DatagramSocket ds = null;
+        try {
+            DatagramPacket dp = new DatagramPacket( buffer, 0, buffer.length, local, server_port );
+
+            ds = new DatagramSocket();
+            ds.send( dp );
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (ds != null) {
+                ds.close();
+            }
+        }
+    }
+}
