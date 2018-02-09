@@ -149,32 +149,20 @@ int main(int argc, char *argv[])
 		}
 		string cible = "";
 
-		char strValueRedLyre[10]="0";
-		char strValueGreenLyre[10]="0";
-		char strValueBlueLyre[10]="0";
+		char strValueRed[10]="0";
+		char strValueGreen[10]="0";
+		char strValueBlue[10]="0";
+		char strValueIntensity[10]="0";
 
-		char strValueRedProjo[10]="0";
-		char strValueGreenProjo[10]="0";
-		char strValueBlueProjo[10]="0";
-		char strValueIntensityProjo[10]="0";
+		int valueRed=0;
+		int valueGreen=0;
+		int valueBlue=0;
+		int valueIntensity=0;
 
-		int valueRedLyre=0;
-		int valueGreenLyre=0;
-		int valueBlueLyre=0;
-
-		int valueRedProjo=0;
-		int valueGreenProjo=0;
-		int valueBlueProjo=0;
-		int valueIntensityProjo=0;
-
-		string testRedLyre;
-		string testBlueLyre;
-		string testGreenLyre;
-
-		string testRedProjo;
-		string testBlueProjo;
-		string testGreenProjo;
-		string testIntensityProjo;
+		string testRed;
+		string testBlue;
+		string testGreen;
+		string testIntensity;
 
 		for(int i=0; i< fullDecoded.size(); i=i+1)
 		{
@@ -196,27 +184,27 @@ int main(int argc, char *argv[])
 			{
 				if(fullDecoded[i][0]=="RED")
 				{
-					testRedLyre = fullDecoded[i][1];
-					strcpy(strValueRedLyre, testRedLyre.c_str());
-					valueRedLyre = atoi(strValueRedLyre);
+					testRed = fullDecoded[i][1];
+					strcpy(strValueRed, testRed.c_str());
+					valueRed = atoi(strValueRed);
 				}
 				if(fullDecoded[i][0]=="BLUE")
 				{
-					testBlueLyre = fullDecoded[i][1];
-					strcpy(strValueBlueLyre, testBlueLyre.c_str());
-					valueBlueLyre = atoi(strValueBlueLyre);
+					testBlue = fullDecoded[i][1];
+					strcpy(strValueBlue, testBlue.c_str());
+					valueBlue = atoi(strValueBlue);
 				}
 				if(fullDecoded[i][0]=="GREEN")
 				{
-					testGreenLyre = fullDecoded[i][1];
-					strcpy(strValueGreenLyre, testGreenLyre.c_str());
-					valueGreenLyre = atoi(strValueGreenLyre);
+					testGreen = fullDecoded[i][1];
+					strcpy(strValueGreen, testGreen.c_str());
+					valueGreen = atoi(strValueGreen);
 				}
 
 			}
-			valeurLyre[0] = valueRedLyre;
-			valeurLyre[1] = valueGreenLyre;
-			valeurLyre[2] = valueBlueLyre;
+			valeurLyre[0] = valueRed;
+			valeurLyre[1] = valueGreen;
+			valeurLyre[2] = valueBlue;
 
 			for(int i=0; i <=2; i=i+1)
 			{
@@ -242,36 +230,36 @@ int main(int argc, char *argv[])
 			{
 				if (fullDecoded[i][0]=="RED")
 				{
-					testRedProjo = fullDecoded[i][1];
-					strcpy(strValueRedProjo, testRedProjo.c_str());
-					valueRedProjo = atoi(strValueRedProjo);
+					testRed = fullDecoded[i][1];
+					strcpy(strValueRed, testRed.c_str());
+					valueRed = atoi(strValueRed);
 				}
 
 				if (fullDecoded[i][0]=="BLUE")
 				{
-					testBlueProjo = fullDecoded[i][1];
-					strcpy(strValueBlueProjo, testBlueProjo.c_str());
-					valueBlueProjo = atoi(strValueBlueProjo);
+					testBlue = fullDecoded[i][1];
+					strcpy(strValueBlue, testBlue.c_str());
+					valueBlue = atoi(strValueBlue);
 				}
 
 				if (fullDecoded[i][0]=="GREEN")
 				{
-					testGreenProjo = fullDecoded[i][1];
-					strcpy(strValueGreenProjo, testGreenProjo.c_str());
-					valueGreenProjo = atoi(strValueGreenProjo);
+					testGreen = fullDecoded[i][1];
+					strcpy(strValueGreen, testGreen.c_str());
+					valueGreen = atoi(strValueGreen);
 				}
 
 				if(fullDecoded[i][0]=="INTENSITY")
 				{
-					testIntensityProjo = fullDecoded[i][1];
-					strcpy(strValueIntensityProjo, testIntensityProjo.c_str());
-					valueIntensityProjo = atoi(strValueIntensityProjo);
+					testIntensity = fullDecoded[i][1];
+					strcpy(strValueIntensity, testIntensity.c_str());
+					valueIntensity = atoi(strValueIntensity);
 				}
 			}
-			valeurProjo[0]=valueRedProjo;
-			valeurProjo[1]=valueGreenProjo;
-			valeurProjo[2]=valueBlueProjo;
-			valeurProjo[6]=valueIntensityProjo;
+			valeurProjo[0]=valueRed;
+			valeurProjo[1]=valueGreen;
+			valeurProjo[2]=valueBlue;
+			valeurProjo[6]=valueIntensity;
 
 			for(int i=0; i<=6; i=i+1)
 			{
