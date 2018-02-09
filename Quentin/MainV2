@@ -1,0 +1,123 @@
+package com.example.quentinlehmann.test1;
+
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SeekBar;
+import android.widget.Toast;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+
+    SeekBarLayout Cc = new SeekBarLayout();
+    Socket Sk = new Socket();
+
+    @SuppressLint("WrongViewCast")
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
+
+        Cc.red = ((SeekBar) findViewById( R.id.seekBarRed ));
+        Cc.blue = ((SeekBar) findViewById( R.id.seekBarBlue ));
+        Cc.green = ((SeekBar) findViewById( R.id.seekBarGreen ));
+        Cc.liRed = findViewById( R.id.LayoutRed );
+        Cc.liBlue = findViewById( R.id.LayoutBlue );
+        Cc.liGreen = findViewById( R.id.LayoutGreen );
+        Cc.li = findViewById( R.id.layoutColor );
+        Cc.red.setOnSeekBarChangeListener( (SeekBar.OnSeekBarChangeListener) this );
+        Cc.green.setOnSeekBarChangeListener( (SeekBar.OnSeekBarChangeListener) this );
+        Cc.blue.setOnSeekBarChangeListener( (SeekBar.OnSeekBarChangeListener) this );
+        Cc.liRed.setBackgroundColor( Color.rgb( 255, 0, 0 ) );
+        Cc.liGreen.setBackgroundColor( Color.rgb( 0, 255, 0 ) );
+        Cc.liBlue.setBackgroundColor( Color.rgb( 0, 0, 255 ) );
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        Cc.SeekBatListener();
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+
+///////////////////////////////////////////////////////////////////////
+    @SuppressLint("ResourceType")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //ajoute les entrées de menu_test à l'ActionBar
+        getMenuInflater().inflate( R.layout.menu, menu );
+        return true;
+    }
+
+    private void effacer() {
+        Cc.red.setProgress( 0 );
+        Cc.green.setProgress( 0 );
+        Cc.blue.setProgress( 0 );
+    }
+
+    private void quitter() {
+        System.exit( 0 );
+    }
+
+    private void enregistrer() {
+        String data = "RED=" + Cc.red.getProgress() + ";GREEN=" + Cc.green.getProgress() + ";BLUE=" + Cc.blue.getProgress() + ";CIBLE=PROJO";
+        try {
+            Toast.makeText(this, "Enregistrer", Toast.LENGTH_LONG).show();
+            File chemin = this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+            File fichier = new File(chemin, "ProjoLED.txt");
+            FileWriter filewriter = new FileWriter(fichier,true);
+            filewriter.write(data+"\n");
+            filewriter.close();
+
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_delete:
+                effacer();
+                return true;
+
+            case R.id.quitter:
+                quitter();
+                return true;
+
+            case R.id.enregistrer:
+                enregistrer();
+                return true;
+        }
+
+        return super.onOptionsItemSelected( item );
+    }
+    @Override
+    public void onClick (View view) {
+        Sk.send(message());
+    }
+
+    public String message(){
+       String msg= "RED=" + Cc.red.getProgress() + ";GREEN=" + Cc.green.getProgress() + ";BLUE=" + Cc.blue.getProgress() + ";CIBLE=PROJO";
+        return msg;
+    }
+}
