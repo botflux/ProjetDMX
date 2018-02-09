@@ -1,0 +1,29 @@
+package com.example.quentinlehmann.test1;
+
+import android.graphics.Color;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+
+/**
+ * Created by quentin.lehmann on 09/02/2018.
+ */
+
+public class SeekBarLayout {
+
+    protected SeekBar red;
+    protected SeekBar blue;
+    protected SeekBar green;
+    protected LinearLayout li;
+    protected View liRed;
+    protected View liBlue;
+    protected View liGreen;
+
+    public void SeekBatListener(){
+        liRed.setBackgroundColor( Color.rgb( red.getProgress(), 0, 0 ) );
+        liGreen.setBackgroundColor( Color.rgb( 0, green.getProgress(), 0 ) );
+        liBlue.setBackgroundColor( Color.rgb( 0, 0, blue.getProgress() ) );
+        li.setBackgroundColor( Color.rgb( red.getProgress(), green.getProgress(), blue.getProgress() ) );
+    }
+}
+
