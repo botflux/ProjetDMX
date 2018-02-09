@@ -2,16 +2,11 @@
 
 #include <iostream>
 #include <iomanip>
-#include <string>
-
+#include <cstring>
 #include <vector>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
+#include "Socket.h"
+#include "Parser.h"
 #include "enttecdmxusb.h"
 
 using namespace std;
@@ -20,36 +15,11 @@ using namespace std;
 
 #define PORT 5000
 #define LG_MESSAGE 256
-#define ADRESSEDEBUTPROJO 22
-#define ADRESSEDEBUTLYRE 1
+#define ADRESSEDEBUTLYRE 22
+#define ADRESSEDEBUTPROJO 1
+#define NBCANAUXPROJO 12
+#define NBCANAUXLYRE 7
 #define TAILLEBUSDMX 512
-
-
-vector<string> decode (string message, char separator)
-{
-vector<string> decoded;
-
-string temp("");
-
-for(int i = 0; i<message.length(); i=i+1)
-{
-	if(message[i] == separator || i==message.length() -1)
-	{
-		if(i==message.length()-1)
-		{
-			temp = temp+message[i];
-		}
-		decoded.push_back(temp);
-		temp = "";
-	}
-
-	else
-	{
-		temp = temp+message[i];
-	}
-}
-return decoded;
-}
 
 class scene
 {
@@ -64,218 +34,143 @@ class scene
 
 int main(int argc, char *argv[])
 {
-
-
-    printf("Peripherique : %s\n\n", DMXDEVICE);
-
+	//Interface DMX
+    cout << "Peripherique : " << DMXDEVICE << endl;
     EnttecDMXUSB *interfaceDMX;
-    cout << "test 0" << endl;
     interfaceDMX = new EnttecDMXUSB(DMX_USB_PRO, DMXDEVICE);
-	cout << "test 1" << endl;
-    string configurationDMX;
-
     bool test = interfaceDMX->IsAvailable();
-    cout << "test : " << endl;
 
     if(test)//Si l'interface DMX est OK
     {
-	//affiche la config
-	configurationDMX = interfaceDMX->GetConfiguration();
-	cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
+		//affiche la config
+		string configurationDMX = interfaceDMX->GetConfiguration();
+		cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
 
-	int valeurLyre[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
-	int valeurProjo[TAILLEBUSDMX];
-	memset(valeurLyre, 0, TAILLEBUSDMX);//On initialise le tableaux en le remplissant de 0
-	memset(valeurProjo, 0, TAILLEBUSDMX);
+		//On initialise le tableau des valeur a envoyer par voie DMX à 0
+		int valeurDMX[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
+		memset(valeurProjo, 0, TAILLEBUSDMX);
 
-	//Variables pour le socket
-	int descripteurSocket;
-	struct sockaddr_in pointDeRencontreLocal;
-	struct sockaddr_in pointDeRencontreDistant;
-	socklen_t longueurAdresse;
-	char messageRecu[LG_MESSAGE];
-	int lus;
-	int retour;
+		//On crée et configure le socket en UDP avec le bon port et n'importe qu'elle interface reseau du raspberry(ici on a la clé wi fi sur un réseau et la carte reseau sur un autre)
+		Socket *mySocket = new Socket();
+		mysocket->setDescription(PF_INET,SOCK_DGRAM,0);
+		mySocket->setPdrLocal(PF_INET, htons(PORT), htonl(INADDDR_ANY));
+		mySocket->bindSocket();
 
-	descripteurSocket = socket(PF_INET, SOCK_DGRAM, 0);//On definit le protocole du socket sur UDP
+		vector<scene> storyboard;//On prepare le tableau dynamique qui contiendra les storyboard
 
-	if(descripteurSocket <0) //Si echec on arrete le programme
-	{
-		perror("socket");
-		exit(-1);
-	}
-	printf("Socket cree avec succes (%d)\n", descripteurSocket);
+		char message[LG_MESSAGE];//On initialise le message que le serveur va recevoir
 
-	longueurAdresse = sizeof(struct sockaddr_in);
-	memset(&pointDeRencontreLocal, 0x00, longueurAdresse);
-	pointDeRencontreLocal.sin_family = PF_INET;
-
-	pointDeRencontreLocal.sin_addr.s_addr = htonl(INADDR_ANY);
-	pointDeRencontreLocal.sin_port = htons(PORT);
-
-	if((bind(descripteurSocket, (struct sockaddr *)&pointDeRencontreLocal, longueurAdresse)) <0)
-	{
-		perror("bind");
-		exit(-2);
-	}
-
-	printf("Socket attachee avec succes ! \n");
-
-	longueurAdresse = sizeof(pointDeRencontreDistant);
-
-	memset(&pointDeRencontreDistant, 0x00, longueurAdresse);
-
-	memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));//On initialise messageRecu comme une chaine vide
-
-	int j;
-	vector<scene> storyboard;
-	while(1)
-	{
-		memset(messageRecu, 0x00, LG_MESSAGE*sizeof(char));
-		//On attend un ordre d'un client
-		lus = recvfrom(descripteurSocket, messageRecu, sizeof(messageRecu),0,(struct sockaddr*)&pointDeRencontreDistant, &longueurAdresse);
-		//On affiche le message recu
-		printf("Message %s reçu avec succes (%d octets)\n\n", messageRecu, lus);
-
-		string message = messageRecu;
-
-		vector<string> vectorStr = decode(message,';');
-		vector< vector<string> > fullDecoded;
-
-		for(int i = 0; i < vectorStr.size(); i=i+1)
+		while(1)
 		{
-			vector<string> tempo = decode(vectorStr[i],'=');
-			fullDecoded.push_back(tempo);
-		}
-		string cible = "";
+			memset(message, 0x00, LG_MESSAGE*sizeof(char));//On le remet à 0 à chaque fois
+			//On attend un ordre d'un client
+			mySocket->setLus(recvfrom(mySocket->getDescripteur(), message, sizeof(message),0,(struct sockaddr*)mySocket->getPdrDistant(), mySocket->getLgAddr2()));
+			//On affiche le message recu
+			cout << "Message recu : " << message << endl;
+			string m = message;
+			
+			//On creer un parser et on l'utilise pour decoder le message recu
+			Parser *p = new Parser();
+			vector<string> vectorStr = p->decode(m,';');
+			vector< vector<string> > fullDecoded;
 
-		char strValueRed[10]="0";
-		char strValueGreen[10]="0";
-		char strValueBlue[10]="0";
-		char strValueIntensity[10]="0";
-
-		int valueRed=0;
-		int valueGreen=0;
-		int valueBlue=0;
-		int valueIntensity=0;
-
-		string testRed;
-		string testBlue;
-		string testGreen;
-		string testIntensity;
-
-		for(int i=0; i< fullDecoded.size(); i=i+1)
-		{
-			cout <<"Nom : " << fullDecoded[i][0]  <<"\tValeur : " << fullDecoded[i][1] << endl; 
-			if(fullDecoded[i][0]=="CIBLE")
+			for(int i = 0; i < vectorStr.size(); i=i+1)
 			{
-				cible = fullDecoded[i][1];
+				vector<string> tempo = p->decode(vectorStr[i],'=');
+				fullDecoded.push_back(tempo);
 			}
-		}
+			string cible = "";
 
-		//Pour la lyre  :
-		if (cible == "PROJO")
-		{
-			int canalLyre = ADRESSEDEBUTLYRE;
+			int valueRed=0;
+			int valueGreen=0;
+			int valueBlue=0;
+			int valueIntensity=0;
 
+			//On rempli un tableau en 2 dimension avec les information decodées du message qu'on trie
+			for(int i=0; i< fullDecoded.size(); i=i+1)
+			{
+				cout <<"Nom : " << fullDecoded[i][0]  <<"\tValeur : " << fullDecoded[i][1] << endl; 
+				if(fullDecoded[i][0]=="CIBLE")
+				{
+					cible = fullDecoded[i][1];//On cherche avant tout la cible du message
+				}
+			}
 
-
+			//Si la cible est le projo
+			if (cible == "PROJO")
+			{
 			for(int i=0; i < fullDecoded.size();i=i+1)
-			{
-				if(fullDecoded[i][0]=="RED")
 				{
-					testRed = fullDecoded[i][1];
-					strcpy(strValueRed, testRed.c_str());
-					valueRed = atoi(strValueRed);
+					if(fullDecoded[i][0]=="RED")
+					{
+						valueRed = atoi(fullDecoded[i][1].c_str());
+					}
+					if(fullDecoded[i][0]=="BLUE")
+					{
+						valueBlue = atoi(fullDecoded[i][1].c_str());
+					}
+					if(fullDecoded[i][0]=="GREEN")
+					{
+						valueGreen = atoi(fullDecoded[i][1].c_str());
+					}
 				}
-				if(fullDecoded[i][0]=="BLUE")
+				for(int i=0; i<=3;i=i+1)//La lyre est divisée en 4 quart, on veut allumer la barre entierrement donc on fait une boucle qui allume chaque quart
 				{
-					testBlue = fullDecoded[i][1];
-					strcpy(strValueBlue, testBlue.c_str());
-					valueBlue = atoi(strValueBlue);
-				}
-				if(fullDecoded[i][0]=="GREEN")
-				{
-					testGreen = fullDecoded[i][1];
-					strcpy(strValueGreen, testGreen.c_str());
-					valueGreen = atoi(strValueGreen);
+					valeurDMX[ADRESSEDEBUTPROJO + (i*3)] = valueRed;
+					valeurDMX[ADRESSEDEBUTPROJO + 1 + (i*3)] = valueGreen;
+					valeurDMX[ADRESSEDEBUTPROJO + 2 + (i*3)] = valueBlue;
 				}
 
+				for(int i=ADRESSEDEBUTPROJO; i <=ADRESSEDEBUTPROJO+NBCANAUXPROJO; i=i+1)
+				{
+					interfaceDMX->SetCanalDMX(i, valeurDMX[i]);
+				}
+				interfaceDMX->SendDMX();//on envoie la trame DMX au boitier
 			}
-			valeurLyre[0] = valueRed;
-			valeurLyre[1] = valueGreen;
-			valeurLyre[2] = valueBlue;
 
-			for(int i=0; i <=2; i=i+1)
+			//Si la cible est la lyre
+			else if(cible == "LYRE")
 			{
-				//De base la lyre se configure quart par quart
-				//ici on veut l'allumer entierement couleur par couleur
-				//On fait 3 tour de boucle pour les 3 couleurs
-				//et on met chaque quart a la meme valeur
-				interfaceDMX->SetCanalDMX(canalLyre, valeurLyre[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+3, valeurLyre[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+6, valeurLyre[i]);
-				interfaceDMX->SetCanalDMX(canalLyre+9,valeurLyre[i]);
-				canalLyre = canalLyre + 1;//A chaque tour on passe a la couleur suivante en indentant les canaux
+				for(int i=0; i < fullDecoded.size(); i=i+1)
+				{
+					if (fullDecoded[i][0]=="RED")
+					{
+						valueRed = atoi(fullDecoded[i][1].c_str());
+					}
+
+					if (fullDecoded[i][0]=="BLUE")
+					{
+						valueBlue = atoi(fullDecoded[i][1].c_str());
+					}
+
+					if (fullDecoded[i][0]=="GREEN")
+					{
+						valueGreen = atoi(fullDecoded[i][1].c_str());
+					}
+
+					if(fullDecoded[i][0]=="INTENSITY")
+					{
+						valueIntensity = atoi(fullDecoded[i][1].c_str());
+					}
+				}
+				valeurDMX[ADRESSEDEBUTLYRE]=valueRed;
+				valeurDMX[ADRESSEDEBUTLYRE+1]=valueGreen;
+				valeurDMX[ADRESSEDEBUTLYRE+2]=valueBlue;
+				valeurDMX[ADRESSEDEBUTLYRE+6]=valueIntensity;
+
+				for(int i=ADRESSEDEBUTLYRE; i<=ADRESSEDEBUTLYRE+6; i=i+1)
+				{
+					interfaceDMX->SetCanalDMX(i, valeurProjo[i]);
+				}
+				interfaceDMX->SendDMX();
 			}
-			interfaceDMX->SendDMX();//on envoie la trame DMX au boitier
+			
+			else//si il n'y a pas de cible ou qu'elle est incorrecte
+			{
+				cout<< "Cible incorrecte"<<endl;
+			}
 		}
-
-		//Pour le projo
-		else if(cible == "LYRE")
-		{
-			int canalProjo = ADRESSEDEBUTPROJO;
-
-			for(int i=0; i < fullDecoded.size(); i=i+1)
-			{
-				if (fullDecoded[i][0]=="RED")
-				{
-					testRed = fullDecoded[i][1];
-					strcpy(strValueRed, testRed.c_str());
-					valueRed = atoi(strValueRed);
-				}
-
-				if (fullDecoded[i][0]=="BLUE")
-				{
-					testBlue = fullDecoded[i][1];
-					strcpy(strValueBlue, testBlue.c_str());
-					valueBlue = atoi(strValueBlue);
-				}
-
-				if (fullDecoded[i][0]=="GREEN")
-				{
-					testGreen = fullDecoded[i][1];
-					strcpy(strValueGreen, testGreen.c_str());
-					valueGreen = atoi(strValueGreen);
-				}
-
-				if(fullDecoded[i][0]=="INTENSITY")
-				{
-					testIntensity = fullDecoded[i][1];
-					strcpy(strValueIntensity, testIntensity.c_str());
-					valueIntensity = atoi(strValueIntensity);
-				}
-			}
-			valeurProjo[0]=valueRed;
-			valeurProjo[1]=valueGreen;
-			valeurProjo[2]=valueBlue;
-			valeurProjo[6]=valueIntensity;
-
-			for(int i=0; i<=6; i=i+1)
-			{
-				interfaceDMX->SetCanalDMX(canalProjo, valeurProjo[i]);
-				canalProjo = canalProjo + 1;
-			}
-			interfaceDMX->SendDMX();
-		}
-
-		else// Si la cible n'existe pas
-		{
-			cout<< "Cible incorrecte"<<endl;
-		}
-
-	}
-	close(descripteurSocket);
+		close(descripteurSocket);
     }
     delete interfaceDMX;
     return 0;
