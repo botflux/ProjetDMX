@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 					valeurDMX[ADRESSEDEBUTPROJO + 2 + (i*3)] = valueBlue;
 				}
 
-				for(int i=ADRESSEDEBUTPROJO; i <=ADRESSEDEBUTPROJO+NBCANAUXPROJO; i=i+1)
+				for(int i=ADRESSEDEBUTPROJO; i <=ADRESSEDEBUTPROJO+NBCANAUXPROJO - 1; i=i+1)
 				{
 					interfaceDMX->SetCanalDMX(i, valeurDMX[i]);
 				}
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 				valeurDMX[ADRESSEDEBUTLYRE+2]=valueBlue;
 				valeurDMX[ADRESSEDEBUTLYRE+6]=valueIntensity;
 
-				for(int i=ADRESSEDEBUTLYRE; i<=ADRESSEDEBUTLYRE+6; i=i+1)
+				for(int i=ADRESSEDEBUTLYRE; i<=ADRESSEDEBUTLYRE+NBCANAUXLYRE -1; i=i+1)
 				{
 					interfaceDMX->SetCanalDMX(i, valeurProjo[i]);
 				}
