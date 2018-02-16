@@ -7,8 +7,6 @@
 
 using namespace std;
 
-#define LG_MESSAGE 256
-
 class Socket
 {
 	int descripteurSocket;
@@ -41,6 +39,7 @@ public:
 	int getLus();
 	int getRetour();
 	void bindSocket();
+	void closeDescripteur();
 	~Socket();
 };
 
