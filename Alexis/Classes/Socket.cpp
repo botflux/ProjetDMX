@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <cstdlib>
 #include <iostream>
-
+#include "enttecdmxusb.h"
 using namespace std;
 
 Socket::Socket()
@@ -110,6 +110,11 @@ void Socket::bindSocket()
 	{
 		cout << "Socket attache avec succes"<< endl;
 	}
+}
+
+void Socket::closeDescripteur()
+{
+	close(descripteurSocket);
 }
 
 Socket::~Socket()
