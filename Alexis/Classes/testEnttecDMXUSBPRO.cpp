@@ -15,6 +15,7 @@
 
 #include "Socket.h"
 #include "Parser.h"
+#include "DMX.h"
 #include "enttecdmxusb.h"
 
 using namespace std;
@@ -49,12 +50,12 @@ int main(int argc, char *argv[])
     EnttecDMXUSB *interfaceDMX;
     interfaceDMX = new EnttecDMXUSB(DMX_USB_PRO, DMXDEVICE);
     bool test = interfaceDMX->IsAvailable();
-    cout << "Hello world\n";
+	
     if(test)//Si l'interface DMX est OK
     {
 		//affiche la config
-		string configurationDMX = interfaceDMX->GetConfiguration();
-		cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
+		//string configurationDMX = interfaceDMX->GetConfiguration();
+		//cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
 
 		//On initialise le tableau des valeur a envoyer par voie DMX à 0
 		int valeurDMX[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
@@ -69,6 +70,9 @@ int main(int argc, char *argv[])
 		vector<scene> storyboard;//On prepare le tableau dynamique qui contiendra les storyboard
 
 		char message[LG_MESSAGE];//On initialise le message que le serveur va recevoir
+		
+		DMX *projo = new DMX(ADRESSEDEBUTPROJO, "PROJO");
+		DMX *lyre = new DMX(ADRESSEDEBUTLYRE, "LYRE");
 		
 		while(1)
 		{
@@ -110,7 +114,7 @@ int main(int argc, char *argv[])
 				mySocket->sendACK(true);
 				for(int i=0; i < fullDecoded.size();i=i+1)
 				{
-					mySocket->remplirTab(valeurDMX, ADRESSEDEBUTPROJO, "PROJO", fullDecoded[i][0], fullDecoded[i][1]);
+					projo->remplirTab(valeurDMX, fullDecoded[i][0], fullDecoded[i][1]);
 				}
 
 				for(int i=ADRESSEDEBUTPROJO; i <=ADRESSEDEBUTPROJO+NBCANAUXPROJO - 1; i=i+1)
@@ -126,7 +130,7 @@ int main(int argc, char *argv[])
 				mySocket->sendACK(true);
 				for(int i=0; i < fullDecoded.size();i=i+1)
 				{
-					mySocket->remplirTab(valeurDMX, ADRESSEDEBUTLYRE, "LYRE", fullDecoded[i][0], fullDecoded[i][1]);
+					lyre->remplirTab(valeurDMX, fullDecoded[i][0], fullDecoded[i][1]);
 				}
 				
 				for(int i=ADRESSEDEBUTLYRE; i<=ADRESSEDEBUTLYRE+NBCANAUXLYRE-1; i=i+1)
