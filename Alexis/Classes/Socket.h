@@ -31,7 +31,7 @@ public:
 	int getDescripteur();
 	
 	void sendACK(bool);
-	void remplirTab(int[], int, string, string, string);
+	
 	
 	struct sockaddr_in *getPdrLocal();
 	struct sockaddr_in *getPdrDistant();
