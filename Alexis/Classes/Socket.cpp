@@ -37,9 +37,16 @@ void Socket::setPdrLocal(short sinFamily, unsigned short sinPort, unsigned long 
 
 void Socket::setPdrDistant(short sinFamily, unsigned short sinPort, unsigned long sAddr)
 {
-	pointDeRencontreDistant.sin_family = sinFamily;
+//	pointDeRencontreDistant.sin_family = sinFamily;
 	pointDeRencontreDistant.sin_port = sinPort;
-	pointDeRencontreDistant.sin_addr.s_addr = sAddr;
+//	pointDeRencontreDistant.sin_addr.s_addr = sAddr;
+}
+
+void Socket::affichePdrDistant()
+{
+	cout << "sin_family = " << pointDeRencontreDistant.sin_family << endl;
+	cout << "sin_port = " << pointDeRencontreDistant.sin_port << endl;
+	cout << "sin_addr.s_addr = " << pointDeRencontreDistant.sin_addr.s_addr << endl;
 }
 
 void Socket::setMessage(char *a)
@@ -119,5 +126,92 @@ void Socket::closeDescripteur()
 
 Socket::~Socket()
 {
+	
 	delete messageRecu;
 }
+
+void Socket::sendACK(bool a)
+{
+	char reponse[]= "Message reçu correct";
+	char reponseCibleInvalide[] = "Cible INVALIDE";
+	
+	switch ( a )
+	{
+		case true : 
+			sendto(descripteurSocket, reponse,sizeof(reponse), 0, (struct sockaddr *)&pointDeRencontreDistant, longueurAdresse);
+			break;
+		case false :
+			sendto(descripteurSocket, reponseCibleInvalide,sizeof(reponseCibleInvalide), 0, (struct sockaddr *)&pointDeRencontreDistant, longueurAdresse);
+			break;
+	}
+}
+
+
+void Socket::remplirTab(int valeurDMX[], int ADRESSEDEBUT, string equipementDMX, string fullDecoded, string a)
+{
+	if (equipementDMX == "LYRE")
+	{
+		if (fullDecoded=="RED")
+		{
+			int valueRed = atoi(a.c_str());
+			valeurDMX[ADRESSEDEBUT]=valueRed;
+		}
+
+		if (fullDecoded=="BLUE")
+		{
+			int valueBlue = atoi(a.c_str());
+			valeurDMX[ADRESSEDEBUT+2]=valueBlue;
+		}
+
+		if (fullDecoded=="GREEN")
+		{
+			int valueGreen = atoi(a.c_str());
+			valeurDMX[ADRESSEDEBUT+1]=valueGreen;
+		}
+
+		if(fullDecoded=="INTENSITY")
+		{
+			int valueIntensity = atoi(a.c_str());
+			valeurDMX[ADRESSEDEBUT+6]=valueIntensity;
+		}
+	}
+	
+	else if (equipementDMX == "PROJO")
+	{
+		if (fullDecoded=="RED")
+		{
+			int valueRed = atoi(a.c_str());
+			
+			for(int i=0; i<=3;i=i+1)
+			{
+				valeurDMX[ADRESSEDEBUT + (i*3)] = valueRed;
+			}
+		}
+
+		if (fullDecoded=="BLUE")
+		{
+			int valueBlue = atoi(a.c_str());
+			
+			for(int i=0; i<=3;i=i+1)
+			{
+				valeurDMX[ADRESSEDEBUT + 2 +(i*3)] = valueBlue;
+			}
+		}
+
+		if (fullDecoded=="GREEN")
+		{
+			int valueGreen = atoi(a.c_str());
+			
+			for(int i=0; i<=3;i=i+1)
+			{
+				valeurDMX[ADRESSEDEBUT + 1 +(i*3)] = valueGreen;
+			}
+		}
+	}
+}
+
+
+
+
+
+
