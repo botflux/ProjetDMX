@@ -147,68 +147,6 @@ void Socket::sendACK(bool a)
 }
 
 
-void Socket::remplirTab(int valeurDMX[], int ADRESSEDEBUT, string equipementDMX, string fullDecoded, string a)
-{
-	if (equipementDMX == "LYRE")
-	{
-		if (fullDecoded=="RED")
-		{
-			int valueRed = atoi(a.c_str());
-			valeurDMX[ADRESSEDEBUT]=valueRed;
-		}
-
-		if (fullDecoded=="BLUE")
-		{
-			int valueBlue = atoi(a.c_str());
-			valeurDMX[ADRESSEDEBUT+2]=valueBlue;
-		}
-
-		if (fullDecoded=="GREEN")
-		{
-			int valueGreen = atoi(a.c_str());
-			valeurDMX[ADRESSEDEBUT+1]=valueGreen;
-		}
-
-		if(fullDecoded=="INTENSITY")
-		{
-			int valueIntensity = atoi(a.c_str());
-			valeurDMX[ADRESSEDEBUT+6]=valueIntensity;
-		}
-	}
-	
-	else if (equipementDMX == "PROJO")
-	{
-		if (fullDecoded=="RED")
-		{
-			int valueRed = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[ADRESSEDEBUT + (i*3)] = valueRed;
-			}
-		}
-
-		if (fullDecoded=="BLUE")
-		{
-			int valueBlue = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[ADRESSEDEBUT + 2 +(i*3)] = valueBlue;
-			}
-		}
-
-		if (fullDecoded=="GREEN")
-		{
-			int valueGreen = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[ADRESSEDEBUT + 1 +(i*3)] = valueGreen;
-			}
-		}
-	}
-}
 
 
 
