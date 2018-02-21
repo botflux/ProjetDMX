@@ -24,14 +24,16 @@ public:
 
 	void setPdrLocal(short , unsigned short , unsigned long );
 	void setPdrDistant(short , unsigned short , unsigned long );
-
+	void affichePdrDistant();
 	void setMessage(char *);
 	void setRetour(int );
 	void setLus (int);
 	int getDescripteur();
-
+	
+	void sendACK(bool);
+	void remplirTab(int[], int, string, string, string);
+	
 	struct sockaddr_in *getPdrLocal();
-
 	struct sockaddr_in *getPdrDistant();
 	socklen_t getLgAddr();
 	socklen_t* getLgAddr2();
