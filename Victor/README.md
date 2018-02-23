@@ -48,3 +48,9 @@
 ### 2018 - 02 - 06
 
 - Prise en main Commands
+
+### 2018 - 02 - 23
+
+- Prise en main Android Studio
+- Création diagramme
+- Amélioration maquette photoshop
