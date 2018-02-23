@@ -27,9 +27,9 @@ Ven 9 février : bouton effacer (slider couleur = 0), revue de projet 1, ajout b
 
 Mar 13 février : slider intensité et installation matériel 
 
-Mer 14 février : bouton effacer (slider intensité = 0), partie code pour @IP
+Mer 14 février : bouton effacer remettre a 0 slider), partie code pour @IP
 
 Ven 16 février : rajouter checkbox dans IHM, ajout fonction pour cible et @IP
 
-Mar 20 février : checkbox avec cible, adresse Ip dans textbox (fait par A)
+Mar 20 février : checkbox avec cible, adresse Ip dans textbox
 
