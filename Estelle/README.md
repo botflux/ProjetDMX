@@ -22,3 +22,14 @@ Ven 2 février : refais l’IHM du WPF, continuer code (partie storyboard) et co
 Sam 3 février : couleur pour sliders 
 
 Mar 6 février : recherche/test code pour envoyer données par socket.
+
+Ven 9 février : bouton effacer (slider couleur = 0), revue de projet 1, ajout btn pour ip et port serveur, recherche pour slider intensité, renommer bouton, ajouter menu storyboard
+
+Mar 13 février : slider intensité et installation matériel 
+
+Mer 14 février : bouton effacer (slider intensité = 0), partie code pour @IP
+
+Ven 16 février : rajouter checkbox dans IHM, ajout fonction pour cible et @IP
+
+Mar 20 février : checkbox avec cible, adresse Ip dans textbox (fait par A)
+
