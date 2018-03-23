@@ -132,7 +132,7 @@ Socket::~Socket()
 
 void Socket::sendACK(bool a)
 {
-	char reponse[]= "Message reçu correct";
+	char reponse[]= "Message recu correct";
 	char reponseCibleInvalide[] = "Cible INVALIDE";
 	
 	switch ( a )
