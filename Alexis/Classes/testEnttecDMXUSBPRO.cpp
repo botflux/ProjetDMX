@@ -10,41 +10,45 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "Socket.h"
-#include "Parser.h"
 #include "DMX.h"
 #include "enttecdmxusb.h"
+#include "json.h"
+#include "fichierJSON.h"
 
 using namespace std;
 
 #define DMXDEVICE "/dev/ttyUSB0"
+#define LG_MESSAGE 1024
 
-const int PORT = 5000;
-#define LG_MESSAGE 256
-const int ADRESSEDEBUTLYRE = 22;
-const string ADDRLYRE = "22";
-const int ADRESSEDEBUTPROJO = 1;
-const string ADDRPROJO = "1";
 const int NBCANAUXPROJO = 12;
 const int NBCANAUXLYRE = 7;
 const int TAILLEBUSDMX = 512;
 
-class scene
+int main()
 {
-	string cible ;
-	int red ;
-	int green ;
-	int blue ;
-	int intensity ;
-	int duree ;
-	int numero ;
-};
-
-int main(int argc, char *argv[])
-{
+	//Application de la config des projo et des ports
+	json_value* value = fichierJSON::ouvrirJSON("config.json");
+	
+	int PORTDISTANT;
+	int PORT;
+	
+	int NBCANAUXPROJO;
+	int NBCANAUXLYRE;
+	int TAILLEBUSDMX;
+	
+	fichierJSON::setConfig(value, PORT, PORTDISTANT, NBCANAUXPROJO, NBCANAUXLYRE, TAILLEBUSDMX);
+	
+	cout << "Port serveur : " << PORT << endl;
+	cout << "Port client : " << PORTDISTANT << endl;
+	
+	fichierJSON::fermerJSON(value);
+	
+	//delete value;
+	
 	//Interface DMX
     cout << "Peripherique : " << DMXDEVICE << endl;
     EnttecDMXUSB *interfaceDMX;
@@ -53,10 +57,6 @@ int main(int argc, char *argv[])
 	
     if(test)//Si l'interface DMX est OK
     {
-		//affiche la config
-		//string configurationDMX = interfaceDMX->GetConfiguration();
-		//cout << "Interface DMX USB PRO detectee " << std::endl << configurationDMX << std::endl;
-
 		//On initialise le tableau des valeur a envoyer par voie DMX à 0
 		int valeurDMX[TAILLEBUSDMX];//tableau contenant les Valeur des 512 canaux du bus DMX
 		memset(valeurDMX,0x00, TAILLEBUSDMX);
@@ -67,12 +67,15 @@ int main(int argc, char *argv[])
 		mySocket->setPdrLocal(PF_INET, htons(PORT), htonl(INADDR_ANY));
 		mySocket->bindSocket();
 
-		vector<scene> storyboard;//On prepare le tableau dynamique qui contiendra les storyboard
+		//vector<scene> storyboard;//On prepare le tableau dynamique qui contiendra les storyboard
 
 		char message[LG_MESSAGE];//On initialise le message que le serveur va recevoir
 		
-		DMX *projo = new DMX(ADRESSEDEBUTPROJO, "PROJO");
-		DMX *lyre = new DMX(ADRESSEDEBUTLYRE, "LYRE");
+		int ADRESSEDEBUTLYRE;
+		int ADRESSEDEBUTPROJO;
+		
+		DMX *projo;
+		DMX *lyre;
 		
 		while(1)
 		{
@@ -82,61 +85,110 @@ int main(int argc, char *argv[])
 			mySocket->setLus(recvfrom(mySocket->getDescripteur(), message, sizeof(message),0,(struct sockaddr*)mySocket->getPdrDistant(), mySocket->getLgAddr2()));
 			//On affiche le message recu
 			cout << "Message recu : " << message << endl;
-			mySocket->setPdrDistant(0, htons(15000), 0);
-			mySocket->affichePdrDistant();
-			
+			mySocket->setPdrDistant(0, htons(PORTDISTANT), 0);
+			//Stocker le message dans un fichier json
 			string m = message;
+			FILE* fichier = NULL;
+			fichier = fopen("trame.json", "w");
+			fprintf(fichier, m.c_str());
+			fclose(fichier);
+			
 
-			//On creer un parser et on l'utilise pour decoder le message recu
-			Parser *p = new Parser();
-			vector<string> vectorStr = p->decode(m,';');
-			vector< vector<string> > fullDecoded;
+			//Lire et exploiter ce fichier JSON
+			json_value* value = fichierJSON::ouvrirJSON("trame.json");
+			
+			string cible = fichierJSON::getName(value, "CIBLE");
+			
+			cout << "Cible = " << cible << endl;
 
-			for(int i = 0; i < vectorStr.size(); i=i+1)
-			{
-				vector<string> tempo = p->decode(vectorStr[i],'=');
-				fullDecoded.push_back(tempo);
-			}
-			string cible = "";
-
-			//On rempli un tableau en 2 dimension avec les information decodées du message qu'on trie
-			for(int i=0; i< fullDecoded.size(); i=i+1)
-			{
-				cout <<"Nom : " << fullDecoded[i][0]  <<"\tValeur : " << fullDecoded[i][1] << endl; 
-				if(fullDecoded[i][0]=="CIBLE")
-				{
-					cible = fullDecoded[i][1];//On cherche avant tout la cible du message
-				}
-			}
 			//Si la cible est le projo
-			if (cible == ADDRPROJO)
+			if (cible == "PROJO")
 			{
-				mySocket->sendACK(true);
-				for(int i=0; i < fullDecoded.size();i=i+1)
+				
+				ADRESSEDEBUTPROJO = atoi(fichierJSON::getName(value, "ADDRCIBLE").c_str());//On cherche avant tout la cible du message
+				if(ADRESSEDEBUTPROJO<1 || ADRESSEDEBUTPROJO >512)
 				{
-					projo->remplirTab(valeurDMX, fullDecoded[i][0], fullDecoded[i][1]);
+					cout << "Adresse invalide, arret du traitement";
+					break;
 				}
+				
+				projo = new DMX(ADRESSEDEBUTPROJO, "PROJO");
+					
+				mySocket->sendACK(true); //On envoie un accusé de réception au client pour le prévenir que le message a bien été reçu
+				
+				int red = atoi(fichierJSON::getName(value, "RED").c_str());
+				if(red<0 || red >255)
+				{
+					red = 0;
+					cout <<" Valeur red invalide, mise par defaut à 0" << endl;
+				}
+				int green = atoi(fichierJSON::getName(value, "GREEN").c_str());
+				if(green<0 || green >255)
+				{
+					green =0;
+					cout <<" Valeur green invalide, mise par defaut à 0" << endl;
+				}
+				int blue = atoi(fichierJSON::getName(value, "BLUE").c_str());
+				if(blue<0 || blue >255)
+				{
+					blue = 0;
+					cout <<" Valeur blue invalide, mise par defaut à 0" << endl;
+				}
+				
+				projo->remplirTab(valeurDMX, red, green, blue, 0);//On rempli le tableau valeurDMX à partir de l'adresse du projo et des valeurs qu'on lui defini
 
 				for(int i=ADRESSEDEBUTPROJO; i <=ADRESSEDEBUTPROJO+NBCANAUXPROJO - 1; i=i+1)
 				{
-					interfaceDMX->SetCanalDMX(i, valeurDMX[i]);
+					interfaceDMX->SetCanalDMX(i, valeurDMX[i]);//On prepare la trame DMX avec les valeur a envoyer au boitier DMX a partir des valeurs du tableau
 				}
 				interfaceDMX->SendDMX();//on envoie la trame DMX au boitier
 			}
 
 			//Si la cible est la lyre
-			else if(cible == ADDRLYRE)
+			else if(cible == "LYRE")
 			{
-				mySocket->sendACK(true);
-				for(int i=0; i < fullDecoded.size();i=i+1)
+				ADRESSEDEBUTLYRE = atoi(fichierJSON::getName(value, "ADDRCIBLE").c_str());
+				if(ADRESSEDEBUTLYRE<1 || ADRESSEDEBUTLYRE >512)
 				{
-					lyre->remplirTab(valeurDMX, fullDecoded[i][0], fullDecoded[i][1]);
+					cout << "Adresse invalide, arret du traitement";
+					break;
 				}
+				lyre = new DMX(ADRESSEDEBUTLYRE, "LYRE");
+				
+				mySocket->sendACK(true);
+				
+				int red = atoi(fichierJSON::getName(value, "RED").c_str());
+				if(red<0 || red >255)
+				{
+					red = 0;
+					cout <<" Valeur red invalide, mise par defaut à 0" << endl;
+				}
+				int green = atoi(fichierJSON::getName(value, "GREEN").c_str());
+				if(green<0 || green >255)
+				{
+					green = 0;
+					cout <<" Valeur green invalide, mise par defaut à 0" << endl;
+				}
+				int blue = atoi(fichierJSON::getName(value, "BLUE").c_str());
+				if(blue<0 || blue >255)
+				{
+					blue = 0;
+					cout <<" Valeur blue invalide, mise par defaut à 0" << endl;
+				}
+				int intensity = atoi(fichierJSON::getName(value, "INTENSITY").c_str());
+				if(intensity<0 || intensity >255)
+				{
+					intensity = 0;
+					cout <<" Valeur intensity invalide, mise par defaut à 0" << endl;
+				}
+				
+				lyre->remplirTab(valeurDMX, red, green, blue, intensity);
 				
 				for(int i=ADRESSEDEBUTLYRE; i<=ADRESSEDEBUTLYRE+NBCANAUXLYRE-1; i=i+1)
 				{
 					interfaceDMX->SetCanalDMX(i, valeurDMX[i]);
 				}
+				
 				interfaceDMX->SendDMX();
 			}
 
@@ -145,9 +197,14 @@ int main(int argc, char *argv[])
 				cout<< "Cible incorrecte"<<endl;
 				mySocket->sendACK(false);
 			}
+			fichierJSON::fermerJSON(value);
 		}
 		mySocket->closeDescripteur();
+		delete mySocket;
+		delete projo;
+		delete lyre;
     }
     delete interfaceDMX;
-    return 0;
+	
+	return 0;
 }
