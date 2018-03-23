@@ -9,5 +9,5 @@ class DMX
 	
 public:
 	DMX(int, string);
-	void remplirTab(int[], string, string);
+	void remplirTab(int[], int, int, int, int);
 };
