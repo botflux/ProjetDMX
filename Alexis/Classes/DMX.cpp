@@ -11,65 +11,23 @@ DMX::DMX(int address, string equipement)
 }
 
 
-void DMX::remplirTab(int valeurDMX[], string fullDecoded, string a)
+void DMX::remplirTab(int valeurDMX[], int red, int green, int blue, int intensity=100)
 {
 	if (type == "LYRE")
 	{
-		if (fullDecoded=="RED")
-		{
-			int valueRed = atoi(a.c_str());
-			valeurDMX[addr]=valueRed;
-		}
-
-		if (fullDecoded=="BLUE")
-		{
-			int valueBlue = atoi(a.c_str());
-			valeurDMX[addr+2]=valueBlue;
-		}
-
-		if (fullDecoded=="GREEN")
-		{
-			int valueGreen = atoi(a.c_str());
-			valeurDMX[addr+1]=valueGreen;
-		}
-
-		if(fullDecoded=="INTENSITY")
-		{
-			int valueIntensity = atoi(a.c_str());
-			valeurDMX[addr+6]=valueIntensity;
-		}
+		valeurDMX[addr]=red;
+		valeurDMX[addr+1]=green;
+		valeurDMX[addr+2]=blue;
+		valeurDMX[addr+6]=intensity;
 	}
 	
 	else if (type == "PROJO")
 	{
-		if (fullDecoded=="RED")
+		for(int i=0; i<=3;i=i+1)
 		{
-			int valueRed = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[addr + (i*3)] = valueRed;
-			}
-		}
-
-		if (fullDecoded=="BLUE")
-		{
-			int valueBlue = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[addr + 2 +(i*3)] = valueBlue;
-			}
-		}
-
-		if (fullDecoded=="GREEN")
-		{
-			int valueGreen = atoi(a.c_str());
-			
-			for(int i=0; i<=3;i=i+1)
-			{
-				valeurDMX[addr + 1 +(i*3)] = valueGreen;
-			}
+			valeurDMX[addr + (i*3)] = red;
+			valeurDMX[addr + 1 +(i*3)] = green;
+			valeurDMX[addr + 2 +(i*3)] = blue;
 		}
 	}
 }
