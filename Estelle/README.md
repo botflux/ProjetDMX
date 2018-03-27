@@ -33,3 +33,7 @@ Ven 16 février : rajouter checkbox dans IHM, ajout fonction pour cible et @IP
 
 Mar 20 février : checkbox avec cible, adresse Ip dans textbox
 
+Du 20 au 24 mars : refait nouvelle IHM avec nouvelle fenetre : 
+    - fenetre main windows
+    - fenetre configuration
+    - fenetre "a propos" du projet
