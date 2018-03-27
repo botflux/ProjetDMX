@@ -37,3 +37,7 @@ Du 20 au 24 mars : refait nouvelle IHM avec nouvelle fenetre :
     - fenetre main windows
     - fenetre configuration
     - fenetre "a propos" du projet
+
+Mar 27 mars : code pour configuration (checkbox cible et adresse IP, port)
+
+Mer 28 mars : recherche classe JSON + debut classe
