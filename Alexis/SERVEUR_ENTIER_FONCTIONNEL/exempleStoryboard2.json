@@ -1,0 +1,93 @@
+{
+	"storyboard":
+	{
+		"nom": "test1",
+		"elements": 
+		[
+			
+			{
+				"CIBLE": "LYRE",
+				"ADDRCIBLE": "22",
+				"BLUE": "0",
+				"RED": "255",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			
+			{
+				"CIBLE": "PROJO",
+				"ADDRCIBLE": "1",
+				"BLUE": "255",
+				"RED": "0",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			{
+				"CIBLE": "LYRE",
+				"ADDRCIBLE": "22",
+				"BLUE": "255",
+				"RED": "0",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			
+			{
+				"CIBLE": "PROJO",
+				"ADDRCIBLE": "1",
+				"BLUE": "0",
+				"RED": "0",
+				"GREEN": "255",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			{
+				"CIBLE": "LYRE",
+				"ADDRCIBLE": "22",
+				"BLUE": "0",
+				"RED": "255",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "0",
+			},
+			
+			
+			{
+				"CIBLE": "PROJO",
+				"ADDRCIBLE": "1",
+				"BLUE": "255",
+				"RED": "0",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			{
+				"CIBLE": "LYRE",
+				"ADDRCIBLE": "22",
+				"BLUE": "255",
+				"RED": "0",
+				"GREEN": "0",
+				"INTENSITY": "255",
+				"TIME": "500",
+			},
+			
+			
+			{
+				"CIBLE": "PROJO",
+				"ADDRCIBLE": "1",
+				"BLUE": "0",
+				"RED": "0",
+				"GREEN": "255",
+				"INTENSITY": "255",
+				"TIME": "0",
+			},
+		]
+	}
+}
