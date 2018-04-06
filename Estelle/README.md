@@ -46,3 +46,5 @@ Sam 31 mars : afficher couleur dans storyboard et changer mainwindow avec pannea
 Mar 3 avril : 
 
 Merc 4 avril : 
+
+Ven 6 avril : ajout dll pour classe, 
