@@ -43,8 +43,8 @@ Mer 28 mars : recherche classe JSON + debut classe
 
 Sam 31 mars : afficher couleur dans storyboard et changer mainwindow avec panneau changer couleur (fenetre avec slider)
 
-Mar 3 avril : 
+Mar 3 avril : création classe
 
-Merc 4 avril : 
+Merc 4 avril : recherche sur json avec WPF
 
-Ven 6 avril : ajout dll pour classe, 
+Ven 6 avril : ajout dll pour classe, diapo pour revue 3
