@@ -48,3 +48,5 @@ Mar 3 avril : création classe
 Merc 4 avril : recherche sur json avec WPF
 
 Ven 6 avril : ajout dll pour classe, diapo pour revue 3
+
+Mar 11 avril : fini diapo, 
