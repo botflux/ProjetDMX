@@ -138,20 +138,11 @@ Socket::~Socket()
 	delete messageRecu;
 }
 
-void Socket::sendACK(bool a)
+void Socket::sendACK(string a)
 {
-	char reponse[]= "Message recu correct";
-	char reponseCibleInvalide[] = "Cible INVALIDE";
-	
-	switch ( a )
-	{
-		case true : 
-			sendto(descripteurSocket, reponse,sizeof(reponse), 0, (struct sockaddr *)&pointDeRencontreDistant, longueurAdresse);
-			break;
-		case false :
-			sendto(descripteurSocket, reponseCibleInvalide,sizeof(reponseCibleInvalide), 0, (struct sockaddr *)&pointDeRencontreDistant, longueurAdresse);
-			break;
-	}
+	char reponse[]= "0";
+	strcpy(reponse, a.c_str());
+	sendto(descripteurSocket, reponse,sizeof(reponse), 0, (struct sockaddr *)&pointDeRencontreDistant, longueurAdresse);
 }
 
 

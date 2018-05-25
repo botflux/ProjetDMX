@@ -35,7 +35,7 @@ int main()
 	//On crée l'objet interface DMX
     cout << "Peripherique : " << DMXDEVICE << endl;
     EnttecDMXUSB *interfaceDMX;
-    interfaceDMX = new EnttecDMXUSB(DMX_USB_PRO, DMXDEVICE);
+    interfaceDMX = new EnttecDMXUSB(DMX_USB_PRO, "/dev/ttyUSB0");
     bool test = interfaceDMX->IsAvailable();
 	
     if(test)//On verifie si l'interface DMX est OK
@@ -75,8 +75,10 @@ int main()
 		cout << endl << "serveur lance" << endl << endl;
 		
 		//On scinde le programme en 2 fonction qui s'executent de façon simultannées
-		thread first(threadServeur::start, mySocket); //Le serveur qui attend des message et les copie dans un fichier .json
-		thread second(threadDMX::start, mySocket, interfaceDMX);//Une fonction qui permet de lire en permanence ce fichier et qui va gerer les spots
+		int accesFichier = 0;
+		
+		thread first(threadServeur::start, mySocket, &accesFichier); //Le serveur qui attend des message et les copie dans un fichier .json
+		thread second(threadDMX::start, mySocket, interfaceDMX, &accesFichier);//Une fonction qui permet de lire en permanence ce fichier et qui va gerer les spots
 		
 		//On attend que les 2 fonctions soient termiénes avant de finir le programme
 		first.join();

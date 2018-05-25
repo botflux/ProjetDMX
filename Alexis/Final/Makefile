@@ -9,5 +9,5 @@ all:
 	g++ -o Socket.o -c Socket.cpp
 	g++ -o couleur.o -c couleur.cpp
 	g++ -o testEnttecDMXUSBPRO.o -c testEnttecDMXUSBPRO.cpp -std=c++11
-	g++ -pthread -o serveur.exe Socket.o enttecdmxusb.o rs232.o testEnttecDMXUSBPRO.o DMX.o elemStoryBoard.o storyboard.o json.o fichierJSON.o couleur.o
+	g++ -pthread -o serveur Socket.o enttecdmxusb.o rs232.o testEnttecDMXUSBPRO.o DMX.o elemStoryBoard.o storyboard.o json.o fichierJSON.o couleur.o
 	./serveur

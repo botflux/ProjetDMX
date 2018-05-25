@@ -9,7 +9,7 @@ class elemStoryBoard
 	int blue;
 	int red;
 	int green;
-	int intensity;
+	int white;
 	int time;
 public:
 
@@ -18,7 +18,7 @@ public:
 	int getBlue();
 	int getRed();
 	int getGreen();
-	int getIntensity();
+	int getWhite();
 	int getTime();
 	
 	void setCible(string);
@@ -26,7 +26,7 @@ public:
 	void setBlue(int);
 	void setRed(int);
 	void setGreen(int);
-	void setIntensity(int);
+	void setWhite(int);
 	void setTime(int);
 	
 };

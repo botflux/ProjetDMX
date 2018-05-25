@@ -1,51 +1,106 @@
 {
-	"storyboard":
-	{
-		"nom": "test1",
-		"elements": 
-		[
-			
+	"storyboard": {
+		"elements": [
+
 			{
-				"CIBLE": "PROJO",
-				"ADDRCIBLE": "1",
-				"BLUE": "0",
-				"RED": "255",
-				"GREEN": "0",
-				"INTENSITY": "255",
-				"TIME": "200",
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 255,
+				"green": 0,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 255,
+				"red": 0,
+				"green": 0,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
+			}, 
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 255,
+				"green": 0,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 255,
+				"red": 0,
+				"green": 0,
+				"intensity": 255,
+				"time": 200
+			},
+
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
 			},
 			
+			{
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
+			}, 
 			
 			{
-				"CIBLE": "PROJO",
-				"ADDRCIBLE": "1",
-				"BLUE": "255",
-				"RED": "0",
-				"GREEN": "0",
-				"INTENSITY": "255",
-				"TIME": "200",
-			},
-			
-			{
-				"CIBLE": "PROJO",
-				"ADDRCIBLE": "1",
-				"BLUE": "0",
-				"RED": "255",
-				"GREEN": "0",
-				"INTENSITY": "255",
-				"TIME": "200",
-			},
-			
-			
-			{
-				"CIBLE": "PROJO",
-				"ADDRCIBLE": "1",
-				"BLUE": "0",
-				"RED": "0",
-				"GREEN": "255",
-				"INTENSITY": "255",
-				"TIME": "200",
-			},
-		]
+				"target": "PROJO",
+				"targetAddress": 1,
+				"blue": 0,
+				"red": 0,
+				"green": 255,
+				"intensity": 255,
+				"time": 200
+			}
+		],
+		"name": "test1"
 	}
 }

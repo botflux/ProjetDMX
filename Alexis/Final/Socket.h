@@ -30,7 +30,7 @@ public:
 	void setLus (int);
 	int getDescripteur();
 	
-	void sendACK(bool);
+	void sendACK(string);
 	
 	
 	struct sockaddr_in *getPdrLocal();

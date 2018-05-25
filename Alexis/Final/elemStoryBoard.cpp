@@ -25,9 +25,9 @@ int elemStoryBoard::getGreen()
 {
 	return green;
 }
-int elemStoryBoard::getIntensity()
+int elemStoryBoard::getWhite()
 {
-	return intensity;
+	return white;
 }
 int elemStoryBoard::getTime()
 {
@@ -54,9 +54,9 @@ void elemStoryBoard::setGreen(int a)
 {
 	green = a;
 }
-void elemStoryBoard::setIntensity(int a)
+void elemStoryBoard::setWhite(int a)
 {
-	intensity = a;
+	white = a;
 }
 void elemStoryBoard::setTime(int a)
 {

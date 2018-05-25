@@ -20,8 +20,21 @@ string fichierJSON::getName(json_value* value, string name)
 
 	for (x = 0; x < length; x++) 
 	{
-		string n = value->u.object.values[x].name;
-		string v = value->u.object.values[x].value->u.string.ptr;
+		string n = "";
+		string v = "";
+		try
+		{
+			n = value->u.object.values[x].name;
+			if(value->u.object.values[x].value->type == json_string)
+			{
+				v = value->u.object.values[x].value->u.string.ptr;
+			}
+			
+		}
+		catch(exception &e)
+		{
+			cerr << e.what() << endl;
+		}
 		
 		if(n == name)
 		{
@@ -29,6 +42,55 @@ string fichierJSON::getName(json_value* value, string name)
 		}
 	}
 	return "pas  de valeur coresepondante a ce nom";
+}
+
+
+int fichierJSON::getNameInt(json_value* value, string name)
+{
+	int length, x;
+	
+	if (value == NULL) 
+	{
+		cout << "value = NULL";
+		return 0;
+	}
+	length = value->u.object.length;
+
+	for (x = 0; x < length; x++) 
+	{
+		string n = value->u.object.values[x].name;
+		int v = value->u.object.values[x].value->u.integer;
+		
+		if(n == name)
+		{
+			return v;
+		}
+	}
+	return 0;
+}
+
+bool fichierJSON::getNameBool(json_value* value, string name)
+{
+	int length, x;
+	
+	if (value == NULL) 
+	{
+		cout << "value = NULL";
+		return false;
+	}
+	length = value->u.object.length;
+
+	for (x = 0; x < length; x++) 
+	{
+		string n = value->u.object.values[x].name;
+		bool v = value->u.object.values[x].value->u.boolean;
+		
+		if(n == name)
+		{
+			return v;
+		}
+	}
+	return false;
 }
 
 //Appliquer la configuration du serveur et des équipement
